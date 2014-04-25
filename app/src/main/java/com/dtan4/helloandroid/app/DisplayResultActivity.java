@@ -5,23 +5,23 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
-import android.widget.EditText;
+import android.widget.TextView;
 
 
-public class MainActivity extends Activity {
-    public static String TAG="MainActivity";
+public class DisplayResultActivity extends Activity {
+    private static String TAG = "DisplayResultActivity";
+    public static String EXTRA_PARAM = "param";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_display_result);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
@@ -29,11 +29,36 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Intent intent = getIntent();
+        String param = intent.getStringExtra(EXTRA_PARAM);
+        TextView result = (TextView)findViewById(R.id.result);
+        int n = 0;
+
+        try {
+            n = Integer.parseInt(param);
+        } catch (NumberFormatException e) {
+        }
+
+        result.setText(Integer.toString(fib(n)));
+    }
+
+    private int fib(int n) {
+        if (n <= 1) {
+            return 1;
+        } else {
+            return n + fib(n - 1);
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.display_result, menu);
         return true;
     }
 
@@ -60,15 +85,8 @@ public class MainActivity extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_display_result, container, false);
             return rootView;
         }
-    }
-
-    public void calculate(View view){
-        Intent intent = new Intent(this, DisplayResultActivity.class);
-        EditText input = (EditText)findViewById(R.id.input);
-        intent.putExtra(DisplayResultActivity.EXTRA_PARAM, input.getText().toString());
-        startActivity(intent);
     }
 }
