@@ -18,7 +18,11 @@
         </activity>
         <activity
             android:name="com.dtan4.helloandroid.app.DisplayResultActivity"
-            android:label="@string/title_activity_display_result" >
+            android:label="@string/title_activity_display_result"
+            android:parentActivityName="com.dtan4.helloandroid.app.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dtan4.helloandroid.app.MainActivity" />
         </activity>
     </application>
 
